@@ -13,7 +13,7 @@ const db_url = process.env.MONGO_URL
 mongoose.connect(db_url).then(()=>{
     console.log('database connected')
     app.listen(4000, ()=>{
-        console.log('server running');
+        res.send('server running');
         app.use('/blogs', router)
     })
 }).catch(err=>console.log(err));
