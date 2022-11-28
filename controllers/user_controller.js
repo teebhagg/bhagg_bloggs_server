@@ -1,6 +1,7 @@
 const createToken = require("../jwt/jwt");
 const User = require("../model/user");
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+const Post = require("../model/post");
 
 // Create User
 const createUser = asyncHandler(async (req, res) => {
@@ -39,4 +40,15 @@ const getUser = asyncHandler(async(req, res) => {
   }
 })
 
-module.exports = {createUser, logUserIn, getUser}
+// Get User Blogs
+const getUserBlogs = asyncHandler(async(req, res) => {
+  const { email } = req.params;
+  try {
+    const allUserBlogs = await Post.find({email: email})
+    res.status(200).json(allUserBlogs);
+  } catch (error) {
+    res.status(404).json({error: error.message})
+  }
+})
+
+module.exports = {createUser, logUserIn, getUser, getUserBlogs} 

@@ -23,9 +23,9 @@ const getOnePost = async(req, res)=>{
 
 // Create Blog Post
 const createBlogPost = async(req, res)=>{
-    const {title, content} = req.body;
+    const {title, content, author, email} = req.body;
     try {
-        const newPost = await Post.create({title, content});
+        const newPost = await Post.create({title, content, author, email});
         res.status(200).json(newPost);
     } catch (error) {
         res.status(404).json({error: error.message})

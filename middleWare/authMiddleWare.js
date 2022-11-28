@@ -5,14 +5,16 @@ require('dotenv').config();
 
 
 const protect = asyncHandler(async(req, res, next) => {
-    if(req.headers.cookie && req.headers.cookie.startsWith('token')){
+    let token;
+
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         try {
             //Get Token from headers
-            const cookieToken = req.headers.cookie.split('=')[1];
-            console.log(cookieToken);
+            token = req.headers.authorization.split(' ')[1];
+            console.log(token);
 
             // Verify Token
-            const decoded = jwt.verify(cookieToken,process.env.JWT_SECRET);
+            const decoded = jwt.verify(token,process.env.JWT_SECRET);
 
             //Get User from token
             req.user = await User.findById(decoded.id).select('-password');
@@ -24,9 +26,9 @@ const protect = asyncHandler(async(req, res, next) => {
             throw new Error (error.message);
         }
     }
-    if(!req.headers.cookie.startsWith('token')){
+    if(token){
         throw new Error('not authorized, No token')
     }
 })
 
-module.exports = protect
+module.exports = protect 
