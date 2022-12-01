@@ -44,7 +44,7 @@ const getUser = asyncHandler(async(req, res) => {
 const getUserBlogs = asyncHandler(async(req, res) => {
   const { email } = req.params;
   try {
-    const allUserBlogs = await Post.find({email: email})
+    const allUserBlogs = await Post.find({email: email}).sort({createdAt:-1})
     res.status(200).json(allUserBlogs);
   } catch (error) {
     res.status(404).json({error: error.message})
