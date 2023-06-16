@@ -5,7 +5,7 @@ const asyncHandler = require("express-async-handler");
 const getAllPosts = async (req, res) => {
   try {
     const { page } = req.query;
-    const limit = 2; // Number of items per page
+    const limit = 5; // Number of items per page
     const skip = (page - 1) * limit; // Calculate the skip value
 
     const allBlogPost = await Post.find()
