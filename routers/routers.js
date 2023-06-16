@@ -6,6 +6,8 @@ const {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
+  getLikeCount,
+  likeOrUnlikeBlog,
 } = require("../controllers/blog_controllers");
 const {
   createUser,
@@ -14,9 +16,13 @@ const {
   getUserBlogs,
 } = require("../controllers/user_controller");
 const protect = require("../middleWare/authMiddleWare");
+const getCategories = require("../controllers/category_controllers");
 
 // Middleware
 const router = express.Router();
+
+// Categories
+router.get("/categories", getCategories);
 
 // Blogs Endpoints
 router.get("/", getAllPosts);
@@ -28,6 +34,10 @@ router.post("/", createBlogPost);
 router.put("/:id", updateBlogPost);
 
 router.delete("/:id", deleteBlogPost);
+
+router.get("/blog/likes", getLikeCount);
+
+router.patch("/blog", likeOrUnlikeBlog);
 
 // Users EndPoint
 router.post("/register", createUser);
