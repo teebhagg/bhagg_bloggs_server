@@ -86,18 +86,19 @@ const getLikeCount = asyncHandler( async(req, res)=>{
 
 // Like or Unlike Blog Post
 const likeOrUnlikeBlog = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.body;
+  const { id } = req.params;
+  const { userId } = req.body;
+
   try {
     const post = await Post.findById(id);
     const isLiked = post.likes.includes(userId);
+
     if (isLiked) {
-      const index = post.likes.indexOf(userId);
-      post.likes.splice(index, 1);
+      post.likes = post.likes.filter(like => like !== userId);
       await post.save();
       res.status(200).json({ message: "Unliked" });
     } else {
-      post.likes.push(id);
+      post.likes.push(userId);
       await post.save();
       res.status(200).json({ message: "Liked" });
     }
@@ -105,6 +106,7 @@ const likeOrUnlikeBlog = asyncHandler(async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 });
+
 
 module.exports = {
   getAllPosts,
