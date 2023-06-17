@@ -37,7 +37,7 @@ router.delete("/:id", deleteBlogPost);
 
 router.get("/blog/likes/:id", getLikeCount);
 
-router.patch("/blog/:id", likeOrUnlikeBlog);
+router.post("/blog/:id", likeOrUnlikeBlog);
 
 // Users EndPoint
 router.post("/register", createUser);
