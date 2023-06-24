@@ -95,17 +95,19 @@ const likeOrUnlikeBlog = asyncHandler(async (req, res) => {
 
     if (isLiked) {
       post.likes = post.likes.filter(like => like !== userId);
-      await post.save();
-      res.status(200).json({ message: "Unliked" });
     } else {
       post.likes.push(userId);
-      await post.save();
-      res.status(200).json({ message: "Liked" });
     }
+
+    // Exclude 'createdAt' field from the update operation
+    await Post.updateOne({ _id: id }, { $set: { likes: post.likes } });
+
+    res.status(200).json({ message: isLiked ? "Unliked" : "Liked" });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 });
+
 
 
 module.exports = {
